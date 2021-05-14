@@ -1,7 +1,29 @@
 function pageLoad() {
 
-    const img = new Image();
-    img.src = "demo.png";
+    document.getElementById("imageForm").onsubmit = function(e) {
+        
+        e.preventDefault();
+
+        const sourceImageFile = document.getElementById("sourceImageFile");
+
+        const selectedFile = sourceImageFile.files[0];
+
+        formSubmit(selectedFile);
+
+    }
+
+}
+
+function formSubmit(file) {
+
+    const img = document.getElementById("before");
+
+    const reader = new FileReader();        
+    reader.onload = function(event) {
+        img.src = event.target.result;
+    };
+      
+    reader.readAsDataURL(file);
 
     img.onload = function () {
 
@@ -31,14 +53,12 @@ function pageLoad() {
 
         const newImage = document.getElementById("after");
         newImage.src = canvas.toDataURL();
-
-        const download = function(){
-            const link = document.createElement('a');
-            link.download = 'filename.png';
-            link.href = newImage.src;
-            link.click();
-          }();
-
+        
+        const link = document.createElement('a');
+        link.download = 'filename.png';
+        link.href = newImage.src;
+        link.click();
+          
     };
 
 }
